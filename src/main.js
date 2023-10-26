@@ -1,8 +1,6 @@
 let tienda = document.getElementById("tienda");
 
-
 let carrito = JSON.parse(localStorage.getItem("data")) || [];
-
 
 let generarTienda = () => {
   return (tienda.innerHTML = tiendaData
@@ -65,13 +63,11 @@ let disminuir = (id) => {
   localStorage.setItem("data", JSON.stringify(carrito));
 };
 
-
 let actualizar = (id) => {
   let buscar = carrito.find((x) => x.id === id);
   document.getElementById(id).innerHTML = buscar.item;
   calcular();
 };
-
 
 let calcular = () => {
   let carritoIcon = document.getElementById("cantidadCarrito");
