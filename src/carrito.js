@@ -18,19 +18,19 @@ let generarCarritoItems = () => {
                 let buscar = tiendaData.find((y) => y.id === id) || [];
                 let {nombre, img, precio} = buscar;
                 return `
-      <div class="cart-item">
-        <img width="100" src=${img} alt="" />
-        <div class="details">
+      <div class="carrito-item">
+        <img width="100" height= "140" src=${img} alt="" />
+        <div class="detalles">
 
           <div class="title-price-x">
               <h4 class="title-price">
                 <p>${nombre}</p>
-                <p class="cart-item-price">$ ${precio}</p>
+                <p class="carrito-item-precio">$${precio}</p>
               </h4>
-              <i onclick="removeItem(${id})" class="bi bi-x-lg"></i>
+              <i onclick="quitarItem(${id})" class="bi bi-x-lg"></i>
           </div>
 
-          <div class="buttons">
+          <div class="botones">
               <i onclick="disminuir(${id})" class="bi bi-dash-lg"></i>
               <div id=${id} class="quantity">${item}</div>
               <i onclick="aumentar(${id})" class="bi bi-plus-lg"></i>
@@ -45,9 +45,9 @@ let generarCarritoItems = () => {
     } else {
         carritoCompras.innerHTML = ``;
         label.innerHTML = `
-    <h2>Cart is Empty</h2>
+    <h2>El carrito esta vacio</h2>
     <a href="index.html">
-      <button class="HomeBtn">Back to home</button>
+      <button class="HomeBtn">Volver al inicio</button>
     </a>
     `;
     }
@@ -89,16 +89,14 @@ let disminuir = (id) => {
 
 let actualizar = (id) => {
     let search = carrito.find((x) => x.id === id);
-    // console.log(search.item);
     document.getElementById(id).innerHTML = search.item;
     calcular();
     total();
 };
 
-let removeItem = (id) => {
-    let selectedItem = id;
-    // console.log(selectedItem.id);
-    carrito = carrito.filter((x) => x.id !== selectedItem.id);
+let quitarItem = (id) => {
+    let itemSeleccionado = id;
+    carrito = carrito.filter((x) => x.id !== itemSeleccionado.id);
     generarCarritoItems();
     total();
     localStorage.setItem("data", JSON.stringify(carrito));
@@ -108,6 +106,18 @@ let limpiarCarrito = () => {
     carrito = [];
     generarCarritoItems();
     localStorage.setItem("data", JSON.stringify(carrito));
+};
+
+let mensajeCheckout = () => {
+    let cantidad = carrito
+    .map((x) => {
+        let { item, id } = x;
+        let buscar = tiendaData.find((y) => y.id === id) || [];
+
+        return item * buscar.precio;
+    })
+    .reduce((x, y) => x + y, 0);
+    alert(`gracias por su compra se ha descontado ${cantidad} de su cuenta.`);
 };
 
 let total = () => {
@@ -121,9 +131,9 @@ let total = () => {
             })
             .reduce((x, y) => x + y, 0);
         label.innerHTML = `
-    <h2>Total Bill : $ ${cantidad}</h2>
-    <button class="checkout">Checkout</button>
-    <button onclick="limpiarCarrito()" class="removeAll">Clear Cart</button>
+    <h2>Cuenta total : $ ${cantidad}</h2>
+    <button class="checkout" onclick="mensajeCheckout()">Checkout</button>
+    <button onclick="limpiarCarrito()" class="removeAll">Vaciar carrito</button>
     `;
     } else return;
 };

@@ -1,17 +1,8 @@
 let tienda = document.getElementById("tienda");
 
-/**
- * ! Basket to hold all the selected items
- * ? the getItem part is retrieving data from the local storage
- * ? if local storage is blank, basket becomes an empty array
- */
 
 let carrito = JSON.parse(localStorage.getItem("data")) || [];
 
-/**
- * ! Generates the shop with product cards composed of
- * ! images, title, price, buttons, description
- */
 
 let generarTienda = () => {
   return (tienda.innerHTML = tiendaData
@@ -20,16 +11,15 @@ let generarTienda = () => {
       let buscar = carrito.find((y) => y.id === id) || [];
       return `
     <div id=product-id-${id} class="item">
-      <img width="220" src=${img} alt="">
-      <div class="details">
+      <img width="223px" height="280px" src=${img} alt="">
+      <div class="detalles">
         <h3>${nombre}</h3>
         <p>${desc}</p>
-        <div class="price-quantity">
+        <div class="cantidad-precio">
           <h2>$ ${precio} </h2>
-          <div class="buttons">
+          <div class="botones">
             <i onclick="disminuir(${id})" class="bi bi-dash-lg"></i>
-            <div id=${id} class="quantity">${
-        buscar.item === undefined ? 0 : buscar.item}
+            <div id=${id} class="">${buscar.item === undefined ? 0 : buscar.item}
       </div>
             <i onclick="aumentar(${id})" class="bi bi-plus-lg"></i>
           </div>
@@ -42,10 +32,6 @@ let generarTienda = () => {
 };
 
 generarTienda();
-
-/**
- * ! used to increase the selected product item quantity by 1
- */
 
 let aumentar = (id) => {
   let itemSeleccionado = id;
@@ -64,10 +50,6 @@ let aumentar = (id) => {
   localStorage.setItem("data", JSON.stringify(carrito));
 };
 
-/**
- * ! used to decrease the selected product item quantity by 1
- */
-
 let disminuir = (id) => {
   let itemSeleccionado = id;
   let buscar = carrito.find((x) => x.id === itemSeleccionado.id);
@@ -83,9 +65,6 @@ let disminuir = (id) => {
   localStorage.setItem("data", JSON.stringify(carrito));
 };
 
-/**
- * ! To update the digits of picked items on each item card
- */
 
 let actualizar = (id) => {
   let buscar = carrito.find((x) => x.id === id);
@@ -93,9 +72,6 @@ let actualizar = (id) => {
   calcular();
 };
 
-/**
- * ! To calculate total amount of selected Items
- */
 
 let calcular = () => {
   let carritoIcon = document.getElementById("cantidadCarrito");
@@ -103,3 +79,4 @@ let calcular = () => {
 };
 
 calcular();
+
